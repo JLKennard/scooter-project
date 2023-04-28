@@ -3,13 +3,11 @@ const User = require("../src/User");
 
 const scooter1 = new Scooter("station1");
 
-// //typeof scooter === object
-// describe("scooter object", () => {
-//   test("does something", () => {
-//     // edit this to be a real test!
-//     expect(scooter1).toEqual(typeof "object");
-//   });
-// });
+describe("scooter class", () => {
+  test("a new scooter is an object", () => {
+    expect(typeof scooter1).toBe("object");
+  });
+});
 
 //Method tests
 //rent method

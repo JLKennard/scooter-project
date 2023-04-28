@@ -9,6 +9,12 @@ const User = require("../src/User");
 
 const user1 = new User("JDoe", "Jdoe123", 30);
 
+describe("user class", () => {
+  test("a new user is an object", () => {
+    expect(typeof user1).toBe("object");
+  });
+});
+
 describe("A User", () => {
   it("has a username", () => {
     expect(user1.username).toBe("JDoe");
