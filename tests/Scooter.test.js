@@ -51,6 +51,6 @@ describe("scooter methods", () => {
     scooter1.isBroken = true;
     expect(() => {
       scooter1.rent();
-    }).toThrow("scooter needs to charge");
+    }).toThrow("scooter needs repair");
   });
 });
