@@ -3,13 +3,13 @@ const User = require("../src/User");
 
 const scooter1 = new Scooter("station1");
 
-//typeof scooter === object
-describe("scooter object", () => {
-  test("does something", () => {
-    // edit this to be a real test!
-    expect(scooter1).toEqual(typeof "object");
-  });
-});
+// //typeof scooter === object
+// describe("scooter object", () => {
+//   test("does something", () => {
+//     // edit this to be a real test!
+//     expect(scooter1).toEqual(typeof "object");
+//   });
+// });
 
 //Method tests
 //rent method
@@ -19,16 +19,16 @@ describe("scooter object", () => {
 
 describe("scooter intialization", () => {
   it("scooter is init with user set to null", () => {
-    expect(scooter.user).toBe(null);
+    expect(scooter1.user).toBe(null);
   });
   it("scooter is init with serial set to 1", () => {
-    expect(scooter.serial).toBe(1);
+    expect(scooter1.serial).toBe(1);
   });
   it("scooter is init with 100 charge", () => {
-    expect(scooter.charge).toBe(100);
+    expect(scooter1.charge).toBe(100);
   });
   it("scooter is init working", () => {
-    expect(scooter.isBroken).toBe(false);
+    expect(scooter1.isBroken).toBe(false);
   });
 });
 
@@ -48,6 +48,7 @@ describe("scooter methods", () => {
     }).toThrow("scooter needs to charge");
   });
   it("throws correct error when is broken is true", () => {
+    scooter1.charge = 100;
     scooter1.isBroken = true;
     expect(() => {
       scooter1.rent();
