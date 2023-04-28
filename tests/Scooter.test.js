@@ -9,13 +9,7 @@ describe("scooter class", () => {
   });
 });
 
-//Method tests
-//rent method
-//dock method
-//requestRepair method
-//charge method
-
-describe("scooter intialization", () => {
+describe("Scooter properties", () => {
   it("scooter is init with user set to null", () => {
     expect(scooter1.user).toBe(null);
   });
@@ -28,24 +22,27 @@ describe("scooter intialization", () => {
   it("scooter is init working", () => {
     expect(scooter1.isBroken).toBe(false);
   });
+  it("scooter is init with station", () => {
+    expect(scooter1.station).toBe("station1");
+  });
 });
 
 describe("scooter methods", () => {
-  it("sets station to null once scooter has been rented", () => {
+  it("rent method sets station to null once scooter has been rented", () => {
     scooter1.rent();
     expect(scooter1.station).toBe(null);
   });
-  it("sets station correct station once it has been docked", () => {
+  it("dock method sets station correct station once it has been docked", () => {
     scooter1.dock("station2");
     expect(scooter1.station).toBe("station2");
   });
-  it("throws correct error when charge is less than 20", () => {
+  it("rent method throws correct error when charge is less than 20", () => {
     scooter1.charge = 10;
     expect(() => {
       scooter1.rent();
     }).toThrow("scooter needs to charge");
   });
-  it("throws correct error when is broken is true", () => {
+  it("rent method throws correct error when is broken is true", () => {
     scooter1.charge = 100;
     scooter1.isBroken = true;
     expect(() => {
