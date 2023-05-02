@@ -3,8 +3,8 @@ const User = require("../src/User");
 const user1 = new User("JDoe", "Jdoe123", 30);
 
 describe("User class", () => {
-  test("a new user is an object", () => {
-    expect(typeof user1).toBe("object");
+  it("new user is instance of User", () => {
+    expect(user1 instanceof User).toBe(true);
   });
 });
 

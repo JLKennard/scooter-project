@@ -56,15 +56,54 @@ class ScooterApp {
     this.registeredUsers[username].logout();
     console.log("user is logged out");
   }
+
+  // checks if station is valid creates instance of scooter or throws error
   createScooter(station) {
     if (!this.stations[station]) {
       throw new Error("no such station");
     }
+
+    // if such station in stations{} create ne instace of scooter push to stationss[station] arr log to cl
     const newScooter = new Scooter(station);
     this.stations[station].push(newScooter);
 
     console.log("created new scooter");
     return newScooter;
+  }
+  dockScooter(scooter, station) {
+    // if station does not exist or scooter is docked thow error
+    if (!this.stations[station]) {
+      throw new Error("no such station");
+    }
+    if (scooter.station === station) {
+      throw new Error("scooter is docked");
+    }
+    // assign station to scooter
+    scooter.dock(station);
+    // add scooter to stations list
+    this.stations[station].push(scooter);
+    console.log("scooter is docked");
+  }
+  // checks if station is valid removes scooter from station and rents scooter or throws error
+  rentScooter(scooter, user) {
+    //
+    if (scooter.station === null) {
+      throw new Error("scooter already rented");
+    }
+
+    // remove the scooter from the stations array
+    this.stations[scooter.station].splice(
+      this.stations[scooter.station].indexOf(scooter),
+      1
+    );
+    // assign user to scooter
+    scooter.rent(user);
+    console.log("scooter is rented");
+  }
+  // console logs registered users and stations [scooters]
+  print() {
+    console.log(`Registered users: ${this.registeredUsers}`);
+    console.log(`Stations: ${this.stations}`);
   }
 }
 

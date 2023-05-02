@@ -8,11 +8,12 @@ beforeEach(() => {
   scooterapp1 = new ScooterApp();
 });
 
+const scooter = new Scooter("station1");
 const consoleLog = jest.spyOn(global.console, "log");
 
-describe("scooter class", () => {
-  it("a new scooter is an object", () => {
-    expect(typeof scooterapp1).toBe("object");
+describe("scooter app class", () => {
+  it("new scooter app is instance of ScooterApp", () => {
+    expect(scooterapp1 instanceof ScooterApp).toBe(true);
   });
 });
 
@@ -45,13 +46,10 @@ describe("ScooterApp methods", () => {
     scooterapp1.registerUser("tom", "123", 20);
     expect(consoleLog).toHaveBeenCalledWith("user has been registered");
   });
-  it("registerUser method returns expected new user object", () => {
-    expect(scooterapp1.registerUser("tammy", "123", 20)).toEqual({
-      age: 20,
-      loggedIn: false,
-      password: "123",
-      username: "tammy",
-    });
+  it("registerUser  method returns an instance of User", () => {
+    expect(
+      scooterapp1.registerUser("tammy", "123", 20) instanceof User
+    ).toEqual(true);
   });
 
   // loginUser method
@@ -98,18 +96,12 @@ describe("ScooterApp methods", () => {
   });
 
   // createScooter method
-  it("createScooter method throws correct method when incorect station passed", () => {
+  it("createScooter method throws correct error when incorect station passed", () => {
     expect(() => {
       scooterapp1.createScooter("station4");
     }).toThrow("no such station");
   });
-  //!!
-  // will this work if instnce of scooter created prviously
-  // nextSerial propertey not yet static
-  // does it matter in test when creating new isntance of App
-  //!!
   it("createScooter method adds the new Scooter to the stations array", () => {
-    // checks new instance of scooter is at last postion of stations object (station) array
     scooterapp1.createScooter("station1");
     expect(
       scooterapp1.stations["station1"][
@@ -118,8 +110,7 @@ describe("ScooterApp methods", () => {
     ).toEqual({
       charge: 100,
       isBroken: false,
-      nextSerial: 1, // Scooter.nextSerial?
-      serial: 1, //Scooter.nextSerial?
+      serial: Scooter.nextSerial,
       station: "station1",
       user: null,
     });
@@ -128,14 +119,78 @@ describe("ScooterApp methods", () => {
     scooterapp1.createScooter("station1");
     expect(consoleLog).toHaveBeenCalledWith("created new scooter");
   });
-  it("createScooter method returns expected new scooter object", () => {
-    expect(scooterapp1.createScooter("station1")).toEqual({
-      charge: 100,
-      isBroken: false,
-      nextSerial: 1,
-      serial: 1,
-      station: "station1",
-      user: null,
-    });
+  it("createScooter method returns an instance of Scooter", () => {
+    expect(scooterapp1.createScooter("station1") instanceof Scooter).toEqual(
+      true
+    );
+  });
+  // dockScooter method
+  it("dockScooter method throws correct error when scooter already docked", () => {
+    expect(() => {
+      scooterapp1.dockScooter(scooter, "station");
+    }).toThrow("no such station");
+  });
+  it("dockScooter method throws correct error when scooter already docked", () => {
+    expect(() => {
+      scooterapp1.dockScooter(
+        scooterapp1.createScooter("station1"),
+        "station1"
+      );
+    }).toThrow("scooter is docked");
+  });
+  it("dockScooter method docks the scooter to station sets user to null", () => {
+    scooterapp1.dockScooter(scooter, "station2");
+    // evaluate station and user in 1 test with destructuring?
+    expect([scooter.station, scooter.user]).toEqual(["station2", null]);
+  });
+  it("dockScooter method logs correct message to console when scooter is docked", () => {
+    scooter.rent();
+    scooterapp1.dockScooter(scooter, "station1");
+    expect(consoleLog).toHaveBeenCalledWith("scooter is docked");
+  });
+  it("dockScooter method adds the new Scooter to the end of stations array", () => {
+    scooter.rent();
+    scooterapp1.dockScooter(scooter, "station1");
+    expect(
+      scooterapp1.stations["station1"][
+        scooterapp1.stations["station1"].length - 1
+      ]
+    ).toEqual(scooter);
+  });
+
+  // rentScooter method
+  it("rentScooter thows correct error when scooter already rented", () => {
+    expect(() => {
+      const user = new User("tom", "123", 20);
+      scooter.rent(user);
+      scooterapp1.rentScooter(scooter, user);
+    }).toThrow("scooter already rented");
+  });
+
+  it("rentScooter removed the rented scooter from station array", () => {
+    const user = new User("tom", "123", 20);
+    let newScoot = scooterapp1.createScooter("station1");
+    scooterapp1.rentScooter(newScoot, user);
+    expect(scooterapp1.stations.station1.includes(newScoot)).toBe(false);
+  });
+  it("rentScooter updates the user of scooter that is rented", () => {
+    const user = new User("tom", "123", 20);
+    let newScoot = scooterapp1.createScooter("station1");
+    scooterapp1.rentScooter(newScoot, user);
+    expect(newScoot.user).toBe(user);
+  });
+  it("rentScooter logs correct message to console once scooter is rented", () => {
+    const user = new User("tom", "123", 20);
+    let newScoot = scooterapp1.createScooter("station1");
+    scooterapp1.rentScooter(newScoot, user);
+    expect(consoleLog).toHaveBeenCalledWith("scooter is rented");
+  });
+  // print method
+  it("print method prints a string containing the registered userer and the stations", () => {
+    scooterapp1.print();
+    expect(consoleLog).toHaveBeenCalledWith(
+      `Registered users: ${scooterapp1.registeredUsers}` &&
+        `Stations: ${scooterapp1.stations}`
+    );
   });
 });

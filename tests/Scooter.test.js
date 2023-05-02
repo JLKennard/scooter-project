@@ -2,10 +2,11 @@ const Scooter = require("../src/Scooter");
 const User = require("../src/User");
 
 const scooter1 = new Scooter("station1");
+const newUser = new User("Jake", "123", 30);
 
 describe("scooter class", () => {
-  test("a new scooter is an object", () => {
-    expect(typeof scooter1).toBe("object");
+  it("new scooter is instance of ScooterApp", () => {
+    expect(scooter1 instanceof Scooter).toBe(true);
   });
 });
 
@@ -29,8 +30,12 @@ describe("Scooter properties", () => {
 
 describe("scooter methods", () => {
   it("rent method sets station to null once scooter has been rented", () => {
-    scooter1.rent();
+    scooter1.rent(newUser);
     expect(scooter1.station).toBe(null);
+  });
+  it("rent method sets User to user proprty  once scooter has been rented", () => {
+    scooter1.rent(newUser);
+    expect(scooter1.user).toBe(newUser);
   });
   it("dock method sets station correct station once it has been docked", () => {
     scooter1.dock("station2");

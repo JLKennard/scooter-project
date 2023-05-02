@@ -1,13 +1,15 @@
 class Scooter {
+  static nextSerial = 1;
+
   constructor(station) {
     this.station = station;
     this.user = null;
-    this.nextSerial = 1;
-    this.serial = this.nextSerial;
+
+    this.serial = Scooter.nextSerial;
     this.charge = 100;
     this.isBroken = false;
   }
-  rent() {
+  rent(user) {
     if (this.charge <= 20) {
       throw new Error("scooter needs to charge");
     }
@@ -15,6 +17,7 @@ class Scooter {
       throw new Error("scooter needs repair");
     }
     this.station = null;
+    this.user = user;
   }
   dock(station) {
     this.station = station;
